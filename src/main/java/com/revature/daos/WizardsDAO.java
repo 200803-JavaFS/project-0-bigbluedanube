@@ -85,7 +85,7 @@ public class WizardsDAO implements IWizardsDAO {
 			statement.setString(++index, w.getpatronus());
 			if(w.getVault()!=null) {
 				Vault v = w.getVault();
-				statement.setString(++index, w.getVault());	// TYPE MISMATCH HERE CAUSES PROBLEMS.
+				statement.setInt(++index, w.getVault().getVaultNumber());
 			}else {
 				statement.setString(++index, null);
 			}
@@ -115,7 +115,7 @@ public class WizardsDAO implements IWizardsDAO {
 			statement.setString(++index, w.getpatronus());
 			if(w.getVault()!=null) {
 				Vault v = w.getVault();
-				statement.setString(++index, w.getVault());	// ANOTHER TYPE MISMATCH
+				statement.setInt(++index, w.getVault().getVaultNumber());
 			}else {
 				statement.setString(++index, null);
 			}
@@ -167,7 +167,7 @@ public class WizardsDAO implements IWizardsDAO {
 			statement.setString(++index, w.getwandWood());
 			statement.setString(++index, w.getwandCore());
 			statement.setString(++index, w.getpatronus());
-			statement.setString(++index, w.getVault());			// TYPE MISMATCH
+			statement.setInt(++index, w.getVault().getVaultNumber());
 			
 			statement.execute();
 			return true;

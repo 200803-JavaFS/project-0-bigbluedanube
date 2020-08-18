@@ -9,4 +9,6 @@ public interface IVaultDAO {
 	public List<Vault> findAll();
 	public Vault findByNumber(int vaultNumber);
 	public boolean addVault(Vault v);
+	
+	// public boolean emptyVault(Vault v);		// This works like "Close Account".
 }

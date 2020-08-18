@@ -42,7 +42,7 @@ public class Vault implements Serializable {
 		this.acctActive = acctActive;
 	}
 	
-	public double getBalance (double balance){
+	public double getBalance (){
 		return balance;
 	}
 	
@@ -67,53 +67,55 @@ public class Vault implements Serializable {
 	}
 
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((vaultNumber == null) ? 0 : vaultNumber.hashCode());
-		result = prime * result + ((acctActive == null) ? 0 : acctActive.hashCode());
-		result = prime * result + ((balance == null) ? 0 : balance.hashCode());		
-		result = prime * result + ((isEmployee == null) ? 0 : isEmployee.hashCode());
-		result = prime * result + ((isAdmin == null) ? 0 : isAdmin.hashCode());
-		return result;
-	}
+//	@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((vaultNumber == null) ? 0 : vaultNumber.hashCode());
+//		result = prime * result + ((acctActive == null) ? 0 : acctActive.hashCode());
+//		result = prime * result + ((balance == null) ? 0 : balance.hashCode());		
+//		result = prime * result + ((isEmployee == null) ? 0 : isEmployee.hashCode());
+//		result = prime * result + ((isAdmin == null) ? 0 : isAdmin.hashCode());
+//		return result;
+//	}
 
 	
+	// Okay, I think we need to change the account types from Boolean to Int or String...
+	// Perhaps 0 = Wizard, 1 = Gringotts Employee, 2 = Gringotts Admin
+	// OR, just change the business logic here to make it fit the Boolean type because that makes sens to me.
 	
 	
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Vault other = (Vault) obj;
-		if (vaultNumber == null) {
-			if (other.vaultNumber != null)
-				return false;
-		} else if (!vaultNumber.equals(other.vaultNumber))
-			return false;
-		if (acctActive == null) {
-			if (other.acctActive != null)
-				return false;
-		} else if (!acctActive.equals(other.acctActive))
-			return false;
-		if (isEmployee == null) {
-			if (other.isEmployee != null)
-				return false;
-		} else if (!isEmployee.equals(other.isEmployee))
-			return false;
-		if (isAdmin == null) {
-			if (other.isAdmin != null)
-				return false;
-		} else if (!isAdmin.equals(other.isAdmin))
-			return false;
-		return true;
-	}
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		Vault other = (Vault) obj;
+//		if (vaultNumber == null) {
+//			if (other.vaultNumber != null)
+//				return false;
+//		} else if (!vaultNumber.equals(other.vaultNumber))
+//			return false;
+//		if (acctActive == null) {
+//			if (other.acctActive != null)
+//				return false;
+//		} else if (!acctActive.equals(other.acctActive))
+//			return false;
+//		if (isEmployee == null) {
+//			if (other.isEmployee != null)
+//				return false;
+//		} else if (!isEmployee.equals(other.isEmployee))
+//			return false;
+//		if (isAdmin == null) {
+//			if (other.isAdmin != null)
+//				return false;
+//		} else if (!isAdmin.equals(other.isAdmin))
+//			return false;
+//		return true;
+//	}
 
 	@Override
 	public String toString() {

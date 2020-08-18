@@ -25,10 +25,14 @@ public class VaultDAO implements IVaultDAO {
 			
 			ResultSet result = statement.executeQuery(sql);
 			
+			// Okay, I think we need to change the account types from Boolean to Int or String...
+			// Perhaps 0 = Wizard, 1 = Gringotts Employee, 2 = Gringotts Admin
+			
 			while(result.next()) {
 				Vault v = new Vault();
 				v.setVaultNumber(result.getInt("vault_number"));
 				v.setAcctActive(result.getBoolean("acct_active"));
+				v.setBalance(result).getDouble("balance");			// this was missing, now it's an error.
 				v.setIsEmployee(result.getBoolean("is_employee"));
 				v.setIsAdmin(result.getBoolean("is_admin"));
 				list.add(v); 
@@ -59,6 +63,7 @@ public class VaultDAO implements IVaultDAO {
 				Vault v = new Vault();
 				v.setVaultNumber(result.getInt("vault_number"));
 				v.setAcctActive(result.getBoolean("acct_active"));
+				v.setBalance(result).getDouble("balance");			// this was missing, now it's an error.
 				v.setIsEmployee(result.getBoolean("is_employee"));
 				v.setIsAdmin(result.getBoolean("is_admin"));
 				return v;
@@ -74,11 +79,11 @@ public class VaultDAO implements IVaultDAO {
 	}
 
 	@Override
-	public boolean addVault(Vault v) {
+	public boolean addVault(Vault v) {		// check the INSERT statement.
 		
 		try(Connection conn = ConnectionUtility.getConnection()){
 			
-			String sql = "INSERT INTO vaults (acct_active, vault_number, is_employee, is_admin)"
+			String sql = "INSERT INTO vaults (acct_active, vault_number, balance, is_employee, is_admin)"
 					+ "VALUES (?, ?, ?, ?, ?);";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
@@ -86,6 +91,7 @@ public class VaultDAO implements IVaultDAO {
 			int index = 0;
 			statement.setBoolean(++index, v.getAcctActive());
 			statement.setLong(++index, v.getVaultNumber());
+			statement.setDouble(++index, v.getBalance());
 			statement.setBoolean(++index, v.getIsEmployee());
 			statement.setBoolean(++index, v.getIsAdmin());			
 			statement.execute();
@@ -97,6 +103,8 @@ public class VaultDAO implements IVaultDAO {
 		
 		return false;
 	}
+	
+	// you  will need an "empty vault" boolean here.
 
 
 }

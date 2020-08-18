@@ -15,11 +15,11 @@ public class ConnectionUtility {
 			e.printStackTrace();
 		}
 		
-		String url = "javafs200803.cse2tjd1dwvc.us-east-2.rds.amazonaws.com";
+		String url = "jdbc:postgresql://javafs200803.cse2tjd1dwvc.us-east-2.rds.amazonaws.com:5432/bank";
 		String username = "postgres";
 		String password = "thisisapassword"; 
 		
-		//Please, for the love of G-d DO NOT use this oh-so-crackable password again
+		//Please, for the love of G-d DO NOT use this oh-so-crackable password again.
 		
 		return DriverManager.getConnection(url, username, password);
 	}

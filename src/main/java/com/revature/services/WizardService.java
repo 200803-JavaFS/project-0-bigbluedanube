@@ -16,9 +16,9 @@ public class WizardService {
 
 	private static IWizardsDAO dao = new WizardsDAO();
 	private static IVaultDAO vDao = new VaultDAO();
-	private static final java.util.logging.Logger log = LogManager.getLogger(WizardService.class);
+	private static final org.apache.logging.log4j.Logger log = LogManager.getLogger(WizardService.class);
 
-//	public List<Wizards> findAll() {
+	public List<Wizards> findAll() {
 		log.info("Retrieving all wizards");
 		List<Wizards> list = dao.findAll();
 

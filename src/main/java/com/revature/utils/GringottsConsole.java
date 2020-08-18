@@ -32,16 +32,28 @@ public class GringottsConsole {
 		
 		switch(answer){
 			case "all": 
+				// "Are you a Gringotts Employee or Head Goblin?" Nested if statement here... only Employee/Admin can getAllWizards.
+				// else statement System.out.println("A wizard can only access their vault and no others. Start again.");
 				getAllWizards();
 				break;
-			case "exit":
-				System.out.println("Your business is appreciated. Please exit through the silver doors.");
-				break;
 			case "one":
+				// "Are you a Gringotts Employee or Head Goblin?" Nested if statement here... Restricts access to wizards.
 				getOneWizard();
 				break;
 			case "add":
+				// "Are you a Gringotts Employee or Head Goblin?" Nested if-statement here... Restricts ability to add.
+				// else statement System.out.println("You appear to be lost. Please make your way back to the entrance.");
 				addWizard();
+				break;
+			case "update":
+				System.out.println("Please enter the name of the wizard whose vault requires a visit.");
+				//updateWizard();
+			case "delete":
+				System.out.println("We will empty the vault and present its contents to you in full. You should expect a delivery from our Owl Post Liaison within the fortnight.");
+				//deleteWizard();
+				break;
+			case "exit":
+				System.out.println("Your business is appreciated. Please exit through the silver doors.");
 				break;
 			default:
 				System.out.println("We have no vault-holders by that name. Start again.");
@@ -55,14 +67,14 @@ public class GringottsConsole {
 		String firstName = scan.nextLine();
 		System.out.println("What is the last name of the wizard?");
 		String lastName = scan.nextLine();
-		System.out.println("With which type of wood was their wand made?");
+		System.out.println("What wood was used to make their wand?");
 		String wandWood= scan.nextLine();
 		System.out.println("And the core?");
 		String wandCore= scan.nextLine();
-		System.out.println("Now, produce a corporeal Patronus and tell us its form. Note, no Dementors will be present.");
+		System.out.println("Now, produce a corporeal Patronus and enter the form it takes. We will not be including Dementors in this stage.");
 		String patronus = scan.nextLine();
 		scan.nextLine();
-		System.out.println("Does the wizard already have a vault?");
+		System.out.println("Does the wizard already have a vault? A simple YES or NO will suffice.");
 		Vault v = null;
 		if(scan.nextLine().toLowerCase().equals("yes")) {
 			v = findVault();
@@ -81,7 +93,7 @@ public class GringottsConsole {
 	}
 
 	private Vault findVault() {
-		System.out.println("Does this wizard's already have a vault? \n"
+		System.out.println("Does this wizard already have a vault? \n"
 				+ "if so, enter the vault number. \n"
 				+ "if not, enter the number zero (0).");
 		int res = scan.nextInt();
@@ -95,10 +107,12 @@ public class GringottsConsole {
 	}
 
 	private Vault buildVault() {
-		System.out.println("Does this wizard already have an account with us?");
+		System.out.println("Has this wizard already claimed a vault?"); // Does the wizard already have an active account?
 		boolean acctActive = scan.nextBoolean();
-		System.out.println("What is the new vault number?");
+		System.out.println("What is the vault number?");
 		int vaultNumber = scan.nextInt();
+		// list of vault numbers that are already taken - if statement could work here.
+		// System.out.println("That vault has already been claimed. Find another.");
 		System.out.println("Is the prospective vault-holder a Gringotts employee?");
 		boolean isEmployee = scan.nextBoolean();
 		System.out.println("Is the prospective vault-holder a Gringotts administrator?");
@@ -117,9 +131,9 @@ public class GringottsConsole {
 	}
 	
 	private void getAllWizards() {
-		List<Wizards> list = ws.findAllWizards();
+		List<Wizards> list = ws.findAll();
 		
-		System.out.println("Here are all the Avengers in the database:");
+		System.out.println("Here are all the wizards in the registry: ");
 		for(Wizards w:list) {
 			System.out.println(w);
 		}
