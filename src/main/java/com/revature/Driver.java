@@ -1,24 +1,29 @@
 package com.revature;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.List;
+
+import com.revature.daos.VaultDAO;
+import com.revature.models.Vault;
+import com.revature.utils.GringottsConsole;
 
 public class Driver {
-	
-	//this is an example of a Singleton Design Pattern. Only one Logger will ever exist.
-	private static final Logger log =  LogManager.getLogger(Driver.class);
 
+	private static VaultDAO vDao = new VaultDAO();
+	
 	public static void main(String[] args) {
-		Log.info("The application has started");
+		List<Vault> vaults = vDao.findAll();
 		
-		try {
-			recur();
-		} catch (Error e) {
-			Log.error("Oh no! We've encountered an error!");
+		for (Vault v: vaults) {
+			System.out.println(v);
 		}
 		
-		Log.info("The application is ending."); 
-
+		Vault v = new Vault(777, true, 1000, false, false);
+		
+		System.out.println(vDao.addVault(v));
+		
+		GringottsConsole cons = new GringottsConsole();
+		cons.beginApp();
+		
 	}
 
 }
