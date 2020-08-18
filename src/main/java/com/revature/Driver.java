@@ -11,15 +11,15 @@ public class Driver {
 	private static VaultDAO vDao = new VaultDAO();
 	
 	public static void main(String[] args) {
-		List<Vault> vaults = vDao.findAll();	// says vaults DNE.
+		List<Vault> vaults = vDao.findAll();
 		
 		for (Vault v: vaults) {
 			System.out.println(v);
 		}
 		
-		Vault v = new Vault(); // Do these need to be variables...?
+//		Vault v = new Vault();
 		
-		System.out.println(vDao.addVault(v));
+//		System.out.println(vDao.addVault(v));
 		
 		GringottsConsole cons = new GringottsConsole();
 		cons.beginApp();

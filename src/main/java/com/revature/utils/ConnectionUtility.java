@@ -15,7 +15,7 @@ public class ConnectionUtility {
 			e.printStackTrace();
 		}
 		
-		String url = "jdbc:postgresql://javafs200803.cse2tjd1dwvc.us-east-2.rds.amazonaws.com:5432/bank";
+		String url = "jdbc:postgresql://javafs200803.cse2tjd1dwvc.us-east-2.rds.amazonaws.com:5432/gringotts";
 		String username = "postgres";
 		String password = "thisisapassword"; 
 		

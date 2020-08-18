@@ -15,7 +15,7 @@ public class GringottsConsole {
 	private VaultDAO vd = new VaultDAO(); 
 	
 	public void beginApp() {
-		System.out.println("Welcome to Gringotts.  %n"
+		System.out.println("Welcome to Gringotts.\n"
 				+ "What would you like to do: \n"
 				+ "See [all] Wizards? \n"
 				+ "See [one] Wizard? \n"
@@ -47,10 +47,11 @@ public class GringottsConsole {
 				break;
 			case "update":
 				System.out.println("Please enter the name of the wizard whose vault requires a visit.");
-				//updateWizard();
+				ws.updateWizard(null);
 			case "delete":
-				System.out.println("We will empty the vault and present its contents to you in full. You should expect a delivery from our Owl Post Liaison within the fortnight.");
-				//deleteWizard();
+				System.out.println("We will empty the vault and present its contents to you in full. \n "
+						+ "You should expect a delivery of your records from our Owl Post Liaison within the fortnight.");
+				ws.removeWizard(0);
 				break;
 			case "exit":
 				System.out.println("Your business is appreciated. Please exit through the silver doors.");
@@ -73,13 +74,12 @@ public class GringottsConsole {
 		String wandCore= scan.nextLine();
 		System.out.println("Now, produce a corporeal Patronus and enter the form it takes. We will not be including Dementors in this stage.");
 		String patronus = scan.nextLine();
-		scan.nextLine();
 		System.out.println("Does the wizard already have a vault? A simple YES or NO will suffice.");
 		Vault v = null;
-		if(scan.nextLine().toLowerCase().equals("yes")) {
+		if(scan.nextLine().toLowerCase().equals("yes")) {		//this is a very useful template.
 			v = findVault();
 		}
-		Wizards w = new Wizards();
+		Wizards w = new Wizards(firstName, lastName, wandWood, wandCore, patronus, null);
 		
 		if(ws.insertWizard(w)) {
 			System.out.println("The wizard was added to the registry.");
@@ -96,7 +96,7 @@ public class GringottsConsole {
 		System.out.println("Does this wizard already have a vault? \n"
 				+ "if so, enter the vault number. \n"
 				+ "if not, enter the number zero (0).");
-		int res = scan.nextInt();
+		int res = scan.nextInt();	// CHANGE TO A SWITCH STATEMENT. SEE ABOVE.
 		Vault v = null;
 		if(res == 0) {
 			v = buildVault();
@@ -107,9 +107,9 @@ public class GringottsConsole {
 	}
 
 	private Vault buildVault() {
-		System.out.println("Has this wizard already claimed a vault?"); // Does the wizard already have an active account?
-		boolean acctActive = scan.nextBoolean();
-		System.out.println("What is the vault number?");
+		System.out.println("Let us begin claiming your vault."); // CHANGE TO YES OR NO. Does the wizard already have an active account? 
+		String acctActive = scan.nextLine();
+		System.out.println("Enter your desired vault number.");
 		int vaultNumber = scan.nextInt();
 		// list of vault numbers that are already taken - if statement could work here.
 		// System.out.println("That vault has already been claimed. Find another.");
@@ -133,7 +133,7 @@ public class GringottsConsole {
 	private void getAllWizards() {
 		List<Wizards> list = ws.findAll();
 		
-		System.out.println("Here are all the wizards in the registry: ");
+		System.out.println("These are all the wizards in the registry: ");
 		for(Wizards w:list) {
 			System.out.println(w);
 		}

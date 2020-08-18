@@ -47,7 +47,7 @@ public class WizardsDAO implements IWizardsDAO {
 	@Override
 	public Wizards findById(int id) {
 		try (Connection conn = ConnectionUtility.getConnection()) {
-			String sql = "SELECT * FROM avengers WHERE superhero_id =" + id + ";";
+			String sql = "SELECT * FROM wizards WHERE wizard_id =" + id + ";";
 
 			Statement statement = conn.createStatement();
 
@@ -57,7 +57,7 @@ public class WizardsDAO implements IWizardsDAO {
 				Wizards w = new Wizards(result.getInt("wizard_id"), result.getString("first_name"),
 						result.getString("last_name"), result.getString("wizard_wand_wood"),
 						result.getString("wizard_wand_core"), result.getString("wizard_patronus"), null);
-				if (result.getString("home_base_fk") != null) {
+				if (result.getString("vault_number_fk") != null) {
 					w.setVault(vDao.findByNumber(result.getInt("vault_number_fk")));
 				}
 				return w;
@@ -74,10 +74,25 @@ public class WizardsDAO implements IWizardsDAO {
 
 			String sql = "INSERT INTO wizards (first_name, last_name, wizard_wand_wood, wizard_wand_core, wizard_patronus, vault_number_fk)"
 					+ "VALUES (?, ?, ?, ?, ?, ?);";
-
+			
+			List<Wizards> newList = findAll(); // finds every wizard in the database.
+			for(Wizards o : newList) {
+				if (w.getFirstName().equals(o.getFirstName()) && w.getLastName().equals(o.getLastName())){
+						
+					}
+				}
+			}
+			
+			/* findAll Wizards
+			 * for (int Wizards w in [list of all Wizards]){
+			 * if statement: input Wizards firstName, lastName = firstName, lastNAme in list
+			 * input WizardId = list wizardId
+			 * wizardId becomes owner_fk for the addVault method.
+			 */
+			
 			PreparedStatement statement = conn.prepareStatement(sql);
 
-			int index = 21;
+			int index = 0;
 			statement.setString(++index, w.getFirstName());
 			statement.setString(++index, w.getLastName());
 			statement.setString(++index, w.getwandWood());
@@ -87,7 +102,7 @@ public class WizardsDAO implements IWizardsDAO {
 				Vault v = w.getVault();
 				statement.setInt(++index, w.getVault().getVaultNumber());
 			}else {
-				statement.setString(++index, null);
+				statement.setInt(++index, 0);
 			}
 
 			statement.execute();
@@ -107,7 +122,7 @@ public class WizardsDAO implements IWizardsDAO {
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 
-			int index = 21;
+			int index = 0;
 			statement.setString(++index, w.getFirstName());
 			statement.setString(++index, w.getLastName());
 			statement.setString(++index, w.getwandWood());
@@ -131,7 +146,7 @@ public class WizardsDAO implements IWizardsDAO {
 	}
 
 	@Override
-	public boolean deleteWizard(int wizardId) {
+	public boolean deleteWizard(int wizardId) {		// this isn't happening.
 		try (Connection conn = ConnectionUtility.getConnection()) {
 			String sql = "DELETE FROM wizards WHERE wizard_id =" + wizardId + ";";
 
@@ -150,17 +165,17 @@ public class WizardsDAO implements IWizardsDAO {
 		try (Connection conn = ConnectionUtility.getConnection()){
 			
 			String sql = "BEGIN; "
-					+ "INSERT INTO vaults (acct_active, vault_number, is_employee, is_admin)"
-					+ "VALUES (?, ?, ?, ?);"
 					+ "INSERT INTO wizards (first_name, last_name, wizard_wand_wood, wizard_wand_core, wizard_patronus, vault_number_fk)"
 					+ "VALUES (?, ?, ?, ?, ?, ?);"
+					+ "INSERT INTO vaults (acct_active, vault_number, is_employee, is_admin)"
+					+ "VALUES (?, ?, ?, ?);"
 					+ "COMMIT;";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			
 			Vault v = w.getVault();
 			
-			int index = 21;
+			int index = 0;
 			statement.setInt(++index, w.getwizardId());
 			statement.setString(++index, w.getFirstName());
 			statement.setString(++index, w.getLastName());

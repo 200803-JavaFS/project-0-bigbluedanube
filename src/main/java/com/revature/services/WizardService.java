@@ -16,7 +16,7 @@ public class WizardService {
 
 	private static IWizardsDAO dao = new WizardsDAO();
 	private static IVaultDAO vDao = new VaultDAO();
-	private static final org.apache.logging.log4j.Logger log = LogManager.getLogger(WizardService.class);
+	private static final Logger log = LogManager.getLogger(WizardService.class);
 
 	public List<Wizards> findAll() {
 		log.info("Retrieving all wizards");
@@ -80,6 +80,7 @@ public class WizardService {
 	public boolean removeWizard(int wizardId) {
 		log.info("Deleting Wizard with id: " + wizardId);
 		if (dao.deleteWizard(wizardId)) {
+			log.info("Wizard Deleted.");
 			return true;
 		}
 		return false;

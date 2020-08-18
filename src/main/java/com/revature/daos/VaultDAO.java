@@ -32,7 +32,7 @@ public class VaultDAO implements IVaultDAO {
 				Vault v = new Vault();
 				v.setVaultNumber(result.getInt("vault_number"));
 				v.setAcctActive(result.getBoolean("acct_active"));
-				v.setBalance(result).getDouble("balance");			// this was missing, now it's an error.
+//				v.setBalance(result).getDouble("balance");			// this was missing, now it's an error.
 				v.setIsEmployee(result.getBoolean("is_employee"));
 				v.setIsAdmin(result.getBoolean("is_admin"));
 				list.add(v); 
@@ -63,7 +63,7 @@ public class VaultDAO implements IVaultDAO {
 				Vault v = new Vault();
 				v.setVaultNumber(result.getInt("vault_number"));
 				v.setAcctActive(result.getBoolean("acct_active"));
-				v.setBalance(result).getDouble("balance");			// this was missing, now it's an error.
+//				v.setBalance(result).getDouble("balance");			// this was missing, now it's an error.
 				v.setIsEmployee(result.getBoolean("is_employee"));
 				v.setIsAdmin(result.getBoolean("is_admin"));
 				return v;
@@ -79,21 +79,24 @@ public class VaultDAO implements IVaultDAO {
 	}
 
 	@Override
-	public boolean addVault(Vault v) {		// check the INSERT statement.
+	public boolean addVault(Vault v) {		// check the INSERT statement. Something is weird here.
 		
 		try(Connection conn = ConnectionUtility.getConnection()){
 			
-			String sql = "INSERT INTO vaults (acct_active, vault_number, balance, is_employee, is_admin)"
-					+ "VALUES (?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO vaults (acct_active, balance, is_employee, is_admin)"
+					+ "VALUES (?, ?, ?, ?);";
+			
+//			String sql = "INSERT INTO vaults (acct_active, balance, is_employee, is_admin)"
+//					+ "VALUES (?, ?, ?, ?);";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			
 			int index = 0;
 			statement.setBoolean(++index, v.getAcctActive());
-			statement.setLong(++index, v.getVaultNumber());
+//			statement.setInt(++index, v.getVaultNumber());
 			statement.setDouble(++index, v.getBalance());
 			statement.setBoolean(++index, v.getIsEmployee());
-			statement.setBoolean(++index, v.getIsAdmin());			
+			statement.setBoolean(++index, v.getIsAdmin());	
 			statement.execute();
 			return true; 
 			
