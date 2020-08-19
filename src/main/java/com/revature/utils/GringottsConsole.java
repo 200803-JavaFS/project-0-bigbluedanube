@@ -73,7 +73,6 @@ public class GringottsConsole {
 				break;
 			case "exit":
 				System.out.println("Your business is appreciated. Please exit through the silver doors.");
-				beginApp();
 				break;
 			default:
 				System.out.println("We have no vault-holders by that name. Start again.");
@@ -100,9 +99,6 @@ public class GringottsConsole {
 			
 		}else if(scan.nextLine().toLowerCase().equals("no")) {
 			System.out.println("The Gringotts Goblins will sort out your vault. Look for our owl within the fortnight.");
-			beginApp();
-		} else if(ws.insertWizard(null)) {
-			log.info("Returning ws.insertWizard result: " + ws.insertWizard(w)); //logging weird/null inputs.
 			beginApp();
 		} else {
 			System.out.println("It appears that your spell has backfired. See to your wounds and start again.");
