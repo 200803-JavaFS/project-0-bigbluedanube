@@ -30,8 +30,8 @@ public class WizardsDAO implements IWizardsDAO {
 			while (result.next()) {
 				Wizards w = new Wizards(result.getInt("wizard_id"), result.getString("first_name"),
 						result.getString("last_name"), null);
-				if (result.getString("owner_fk") != null) {
-					w.setVault(vDao.findByNumber(result.getInt("owner_fk")));
+				if (result.getString("first_name") != null) {
+					w.setVault(vDao.findByNumber(result.getInt("wizard_id")));
 				}
 				list.add(w);
 			}
@@ -55,8 +55,8 @@ public class WizardsDAO implements IWizardsDAO {
 			if (result.next()) {
 				Wizards w = new Wizards(result.getInt("wizard_id"), result.getString("first_name"),
 						result.getString("last_name"), null);
-				if (result.getString("owner_fk") != null) {
-					w.setVault(vDao.findByNumber(result.getInt("owner_fk")));
+				if (result.getString("first_name") != null) {
+					w.setVault(vDao.findByNumber(result.getInt("owner_fk")));	// change this.
 				}
 				return w;
 			}
@@ -70,15 +70,15 @@ public class WizardsDAO implements IWizardsDAO {
 	public boolean addWizard(Wizards w) {
 		try (Connection conn = ConnectionUtility.getConnection()) {
 
-			String sql = "INSERT INTO wizards (first_name, last_name, owner_fk_fk)"
-					+ "VALUES (?, ?, ?);";
+			String sql = "INSERT INTO wizards (first_name, last_name)"
+					+ "VALUES (?, ?);";
 			
 			
 			/* findAll Wizards
 			 * for (int Wizards w in [list of all Wizards]){
 			 * if statement: input Wizards firstName, lastName = firstName, lastNAme in list
 			 * input WizardId = list wizardId
-			 * wizardId becomes owner_fk for the addVault method.
+			 * wizardId becomes vault_number for the addVault method.
 			 */
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
@@ -106,7 +106,7 @@ public class WizardsDAO implements IWizardsDAO {
 	@Override
 	public boolean updateWizard(Wizards w) {
 		try (Connection conn = ConnectionUtility.getConnection()) {
-			String sql = "UPDATE wizards SET first_name = ?, last_name = ?, owner_fk_fk = ? WHERE wizard_id = ?;";
+			String sql = "UPDATE wizards SET first_name = ?, last_name = ? WHERE wizard_id = ?;";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 
@@ -151,9 +151,9 @@ public class WizardsDAO implements IWizardsDAO {
 		try (Connection conn = ConnectionUtility.getConnection()){
 			
 			String sql = "BEGIN; "
-					+ "INSERT INTO wizards (first_name, last_name, owner_fk_fk)"
-					+ "VALUES (?, ?, ?);"
-					+ "INSERT INTO vaults (acct_active, owner_fk, is_employee, is_admin)"
+					+ "INSERT INTO wizards (first_name, last_name)"
+					+ "VALUES (?, ?);"
+					+ "INSERT INTO vaults (acct_active, balance, is_employee, is_admin)"
 					+ "VALUES (?, ?, ?, ?);"
 					+ "COMMIT;";
 			

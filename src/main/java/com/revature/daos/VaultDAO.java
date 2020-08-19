@@ -84,11 +84,8 @@ public class VaultDAO implements IVaultDAO {
 		
 		try(Connection conn = ConnectionUtility.getConnection()){
 			
-			String sql = "INSERT INTO vaults (acct_active, vault_number, balance, is_employee, is_admin)"
+			String sql = "INSERT INTO vaults (acct_active, balance, is_employee, is_admin)"
 					+ "VALUES (?, ?, ?, ?);";
-			
-//			String sql = "INSERT INTO vaults (acct_active, balance, is_employee, is_admin)"
-//					+ "VALUES (?, ?, ?, ?);";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			

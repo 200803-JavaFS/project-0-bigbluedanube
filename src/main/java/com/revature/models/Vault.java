@@ -68,8 +68,8 @@ public class Vault implements Serializable {
 
 
 //	@Override
-//	public int hashCode() {
-//		final int prime = 31;
+//	public int hashCode() {		// I'm fairly sure these are String methods, so they do not apply here.
+//		final int prime = 31;	// but I will keep them just in case.
 //		int result = 1;
 //		result = prime * result + ((vaultNumber == null) ? 0 : vaultNumber.hashCode());
 //		result = prime * result + ((acctActive == null) ? 0 : acctActive.hashCode());
@@ -79,12 +79,6 @@ public class Vault implements Serializable {
 //		return result;
 //	}
 
-	
-	// Okay, I think we need to change the account types from Boolean to Int or String...
-	// Perhaps 0 = Wizard, 1 = Gringotts Employee, 2 = Gringotts Admin
-	// OR, just change the business logic here to make it fit the Boolean type because that makes sens to me.
-	
-	
 //	@Override
 //	public boolean equals(Object obj) {
 //		if (this == obj)
@@ -121,6 +115,4 @@ public class Vault implements Serializable {
 	public String toString() {
 		return "Vault [Vault Number=" + vaultNumber + ", acctActive=" + acctActive + "balance=" + balance + ", isEmployee=" + isEmployee + ", isAdmin=" + isAdmin +"]";
 	}
-			
-
 }
