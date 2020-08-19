@@ -17,9 +17,9 @@ public class Driver {
 			System.out.println(v);
 		}
 		
-		Vault v = new Vault();
-		
-		System.out.println(vDao.addVault(v));
+//		Vault v = new Vault();
+//		
+//		System.out.println(vDao.addVault(v));
 		
 		GringottsConsole cons = new GringottsConsole();
 		cons.beginApp();

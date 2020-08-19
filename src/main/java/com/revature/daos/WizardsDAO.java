@@ -70,8 +70,8 @@ public class WizardsDAO implements IWizardsDAO {
 	public boolean addWizard(Wizards w) {
 		try (Connection conn = ConnectionUtility.getConnection()) {
 
-			String sql = "INSERT INTO wizards (wizard_id, first_name, last_name)"
-					+ "VALUES (?, ?, ?);";
+			String sql = "INSERT INTO wizards (first_name, last_name)"
+					+ "VALUES (?, ?);";
 			
 			
 			/* findAll Wizards
@@ -84,16 +84,15 @@ public class WizardsDAO implements IWizardsDAO {
 			PreparedStatement statement = conn.prepareStatement(sql);
 
 			int index = 0;
-			statement.setInt(++index, w.getwizardId());
 			statement.setString(++index, w.getFirstName());
 			statement.setString(++index, w.getLastName());
 			
-			if(w.getVault()!=null) {
-				Vault v = w.getVault();
-				statement.setInt(++index, w.getVault().getVaultNumber());
-			}else {
-				statement.setInt(++index, 0);
-			}
+//			if(w.getVault()!=null) {
+//				Vault v = w.getVault();
+//				statement.setInt(++index, w.getVault().getVaultNumber());
+//			}else {
+//				statement.setInt(++index, 0);
+//			}
 
 			statement.execute();
 			return true;

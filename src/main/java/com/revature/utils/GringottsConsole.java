@@ -89,12 +89,14 @@ public class GringottsConsole {
 		String lastName = scan.nextLine();
 		Wizards w = new Wizards(firstName, lastName, null);
 		log.info("Adding Wizard " + w);
+		ws.insertWizard(w);
 
 		// checking if you're eligible to build the vault yourself or if you must have an employee do it for you.
 		System.out.println("Are you a Gringotts Employee or Head Goblin? A simple [YES] or [NO] will suffice.");
 		if(scan.nextLine().toLowerCase().equals("yes")) {
 			Vault v = buildVault();
 			log.info("Opening Vault " + v);
+			vd.addVault(v);
 			beginApp();
 			
 		}else if(scan.nextLine().toLowerCase().equals("no")) {
