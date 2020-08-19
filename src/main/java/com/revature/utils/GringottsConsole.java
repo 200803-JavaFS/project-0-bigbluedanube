@@ -38,15 +38,11 @@ public class GringottsConsole {
 						+ "A simple [YES] or [NO] will suffice.");	//Goblins are rude. Deal with it.
 				if(scan.nextLine().toLowerCase().equals("yes")) {
 					getAllWizards();
-					beginApp();
 				} else if(scan.nextLine().toLowerCase().equals("no")) {
-					System.out.println("We have cast a rather powerful Fidelius Charms over our customer lists "
+					System.out.println("We have cast a rather powerful Fidelius Charm over our customer lists "
 							+ "so you cannot see them. Start again.");
-					beginApp();
 				}else {
-					System.out.println("Your Revelius Charm has backfired and you are now incorporeal. "
-							+ "Report to St. Mungo's and try again once you've regained a body.");
-					beginApp();
+					System.out.println("Your spell has backfired. See to your wounds and start again.");
 				}
 				break;
 			case "one":
