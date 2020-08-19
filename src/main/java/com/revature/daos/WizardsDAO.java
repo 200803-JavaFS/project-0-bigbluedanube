@@ -29,10 +29,9 @@ public class WizardsDAO implements IWizardsDAO {
 
 			while (result.next()) {
 				Wizards w = new Wizards(result.getInt("wizard_id"), result.getString("first_name"),
-						result.getString("last_name"), result.getString("wizard_wand_wood"),
-						result.getString("wizard_wand_core"), result.getString("wizard_patronus"), null);
-				if (result.getString("vault_number_fk") != null) {
-					w.setVault(vDao.findByNumber(result.getInt("vault_number_fk")));
+						result.getString("last_name"), null);
+				if (result.getString("owner_fk") != null) {
+					w.setVault(vDao.findByNumber(result.getInt("owner_fk")));
 				}
 				list.add(w);
 			}
@@ -55,10 +54,9 @@ public class WizardsDAO implements IWizardsDAO {
 
 			if (result.next()) {
 				Wizards w = new Wizards(result.getInt("wizard_id"), result.getString("first_name"),
-						result.getString("last_name"), result.getString("wizard_wand_wood"),
-						result.getString("wizard_wand_core"), result.getString("wizard_patronus"), null);
-				if (result.getString("vault_number_fk") != null) {
-					w.setVault(vDao.findByNumber(result.getInt("vault_number_fk")));
+						result.getString("last_name"), null);
+				if (result.getString("owner_fk") != null) {
+					w.setVault(vDao.findByNumber(result.getInt("owner_fk")));
 				}
 				return w;
 			}
@@ -72,16 +70,9 @@ public class WizardsDAO implements IWizardsDAO {
 	public boolean addWizard(Wizards w) {
 		try (Connection conn = ConnectionUtility.getConnection()) {
 
-			String sql = "INSERT INTO wizards (first_name, last_name, wizard_wand_wood, wizard_wand_core, wizard_patronus, vault_number_fk)"
-					+ "VALUES (?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO wizards (first_name, last_name, owner_fk_fk)"
+					+ "VALUES (?, ?, ?);";
 			
-			List<Wizards> newList = findAll(); // finds every wizard in the database.
-			for(Wizards o : newList) {
-				if (w.getFirstName().equals(o.getFirstName()) && w.getLastName().equals(o.getLastName())){
-						
-					}
-				}
-			}
 			
 			/* findAll Wizards
 			 * for (int Wizards w in [list of all Wizards]){
@@ -95,9 +86,7 @@ public class WizardsDAO implements IWizardsDAO {
 			int index = 0;
 			statement.setString(++index, w.getFirstName());
 			statement.setString(++index, w.getLastName());
-			statement.setString(++index, w.getwandWood());
-			statement.setString(++index, w.getwandCore());
-			statement.setString(++index, w.getpatronus());
+			
 			if(w.getVault()!=null) {
 				Vault v = w.getVault();
 				statement.setInt(++index, w.getVault().getVaultNumber());
@@ -117,17 +106,14 @@ public class WizardsDAO implements IWizardsDAO {
 	@Override
 	public boolean updateWizard(Wizards w) {
 		try (Connection conn = ConnectionUtility.getConnection()) {
-			String sql = "UPDATE wizards SET first_name = ?, last_name = ?, wizard_wand_wood= ?, "
-					+ "wizard_wand_core = ?, wizard_patronus = ?, vault_number_fk = ? WHERE wizard_id = ?;";
+			String sql = "UPDATE wizards SET first_name = ?, last_name = ?, owner_fk_fk = ? WHERE wizard_id = ?;";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 
 			int index = 0;
 			statement.setString(++index, w.getFirstName());
 			statement.setString(++index, w.getLastName());
-			statement.setString(++index, w.getwandWood());
-			statement.setString(++index, w.getwandCore());
-			statement.setString(++index, w.getpatronus());
+
 			if(w.getVault()!=null) {
 				Vault v = w.getVault();
 				statement.setInt(++index, w.getVault().getVaultNumber());
@@ -165,9 +151,9 @@ public class WizardsDAO implements IWizardsDAO {
 		try (Connection conn = ConnectionUtility.getConnection()){
 			
 			String sql = "BEGIN; "
-					+ "INSERT INTO wizards (first_name, last_name, wizard_wand_wood, wizard_wand_core, wizard_patronus, vault_number_fk)"
-					+ "VALUES (?, ?, ?, ?, ?, ?);"
-					+ "INSERT INTO vaults (acct_active, vault_number, is_employee, is_admin)"
+					+ "INSERT INTO wizards (first_name, last_name, owner_fk_fk)"
+					+ "VALUES (?, ?, ?);"
+					+ "INSERT INTO vaults (acct_active, owner_fk, is_employee, is_admin)"
 					+ "VALUES (?, ?, ?, ?);"
 					+ "COMMIT;";
 			
@@ -179,9 +165,6 @@ public class WizardsDAO implements IWizardsDAO {
 			statement.setInt(++index, w.getwizardId());
 			statement.setString(++index, w.getFirstName());
 			statement.setString(++index, w.getLastName());
-			statement.setString(++index, w.getwandWood());
-			statement.setString(++index, w.getwandCore());
-			statement.setString(++index, w.getpatronus());
 			statement.setInt(++index, w.getVault().getVaultNumber());
 			
 			statement.execute();

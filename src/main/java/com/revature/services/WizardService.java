@@ -24,9 +24,6 @@ public class WizardService {
 
 		for (Wizards w : list) {
 			if (w.getFirstName().equals("Albus")) {
-				w.setwandWood("null");
-				w.setwandCore("null");
-				w.setpatronus("null");
 				w.setVault(null);
 			}
 		}

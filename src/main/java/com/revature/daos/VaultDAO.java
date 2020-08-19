@@ -8,10 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.models.Vault;
 import com.revature.utils.ConnectionUtility;
 
 public class VaultDAO implements IVaultDAO {
+	private static final Logger log = LogManager.getLogger(VaultDAO.class);
 	
 	@Override
 	public List<Vault> findAll() {
@@ -24,9 +28,6 @@ public class VaultDAO implements IVaultDAO {
 			List<Vault> list = new ArrayList<>(); 
 			
 			ResultSet result = statement.executeQuery(sql);
-			
-			// Okay, I think we need to change the account types from Boolean to Int or String...
-			// Perhaps 0 = Wizard, 1 = Gringotts Employee, 2 = Gringotts Admin
 			
 			while(result.next()) {
 				Vault v = new Vault();
@@ -68,7 +69,7 @@ public class VaultDAO implements IVaultDAO {
 				v.setIsAdmin(result.getBoolean("is_admin"));
 				return v;
 			} else {
-				//good place to log a failed query.
+				log.info("Failed Query: Vault not found.");			// had to import the logger to make this work.
 				return null;
 			}
 			
@@ -83,7 +84,7 @@ public class VaultDAO implements IVaultDAO {
 		
 		try(Connection conn = ConnectionUtility.getConnection()){
 			
-			String sql = "INSERT INTO vaults (acct_active, balance, is_employee, is_admin)"
+			String sql = "INSERT INTO vaults (acct_active, vault_number, balance, is_employee, is_admin)"
 					+ "VALUES (?, ?, ?, ?);";
 			
 //			String sql = "INSERT INTO vaults (acct_active, balance, is_employee, is_admin)"
@@ -93,7 +94,7 @@ public class VaultDAO implements IVaultDAO {
 			
 			int index = 0;
 			statement.setBoolean(++index, v.getAcctActive());
-//			statement.setInt(++index, v.getVaultNumber());
+			statement.setInt(++index, v.getVaultNumber());
 			statement.setDouble(++index, v.getBalance());
 			statement.setBoolean(++index, v.getIsEmployee());
 			statement.setBoolean(++index, v.getIsAdmin());	

@@ -2,7 +2,8 @@ package com.revature.utils;
 
 import java.util.List;
 import java.util.Scanner;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.revature.daos.VaultDAO;
 import com.revature.models.Wizards;
 import com.revature.models.Vault;
@@ -13,6 +14,7 @@ public class GringottsConsole {
 	private static final Scanner scan = new Scanner(System.in);
 	private WizardService ws = new WizardService();
 	private VaultDAO vd = new VaultDAO(); 
+	private static final Logger log = LogManager.getLogger(GringottsConsole.class);
 	
 	public void beginApp() {
 		System.out.println("Welcome to Gringotts.\n"
@@ -31,30 +33,49 @@ public class GringottsConsole {
 		answer = answer.toLowerCase();
 		
 		switch(answer){
-			case "all": 
-				// "Are you a Gringotts Employee or Head Goblin?" Nested if statement here... only Employee/Admin can getAllWizards.
-				// else statement System.out.println("A wizard can only access their vault and no others. Start again.");
-				getAllWizards();
+			case "all":
+				System.out.println("Are you a Gringotts Employee or Head Goblin? "
+						+ "A simple [YES] or [NO] will suffice.");	//Goblins are rude. Deal with it.
+				if(scan.nextLine().toLowerCase().equals("yes")) {
+					getAllWizards();					
+				} else if(scan.nextLine().toLowerCase().equals("no")) {
+					System.out.println("We have cast a rather powerful Fidelius Charms over our customer lists "
+							+ "so you cannot see them. Start again.");
+					beginApp();
+				}else {
+					System.out.println("Your Revelius Charm has backfired and you are now incorporeal. "
+							+ "Report to St. Mungo's and try again once you've regained a body.");
+					beginApp();
+				}
 				break;
 			case "one":
-				// "Are you a Gringotts Employee or Head Goblin?" Nested if statement here... Restricts access to wizards.
 				getOneWizard();
 				break;
 			case "add":
-				// "Are you a Gringotts Employee or Head Goblin?" Nested if-statement here... Restricts ability to add.
-				// else statement System.out.println("You appear to be lost. Please make your way back to the entrance.");
 				addWizard();
 				break;
 			case "update":
-				System.out.println("Please enter the name of the wizard whose vault requires a visit.");
-				ws.updateWizard(null);
+				System.out.println("Are you Head Goblin? "
+						+ "Please provide the Head Goblin's Master Key.");
+				if(scan.nextLine().toLowerCase().equals("Griphook")) {
+					ws.updateWizard(null);
+				}
+				log.info("Wizard Updated: " + ws.updateWizard(null));	// logging whatever that puts out.
 			case "delete":
-				System.out.println("We will empty the vault and present its contents to you in full. \n "
-						+ "You should expect a delivery of your records from our Owl Post Liaison within the fortnight.");
-				ws.removeWizard(0);
+				System.out.println("Are you Head Goblin? "
+						+ "Please provide the Head Goblin's Master Key.");
+				if(scan.nextLine().toLowerCase().equals("Griphook")) {	// The Master Key is "Griphook", btw.
+					ws.removeWizard(0);
+					log.info("Wizard Deleted: " + ws.removeWizard(0));
+				} else {
+					System.out.println("It appears your spell has backfired. "
+							+ "See to your wounds and try again.");
+				}
+				beginApp();
 				break;
 			case "exit":
 				System.out.println("Your business is appreciated. Please exit through the silver doors.");
+				beginApp();
 				break;
 			default:
 				System.out.println("We have no vault-holders by that name. Start again.");
@@ -64,41 +85,40 @@ public class GringottsConsole {
 	}
 
 	private void addWizard() {
+		// I put all the fancy footwork here.
 		System.out.println("What is the first name of the Wizard you would like to register?");
 		String firstName = scan.nextLine();
 		System.out.println("What is the last name of the wizard?");
 		String lastName = scan.nextLine();
-		System.out.println("What wood was used to make their wand?");
-		String wandWood= scan.nextLine();
-		System.out.println("And the core?");
-		String wandCore= scan.nextLine();
-		System.out.println("Now, produce a corporeal Patronus and enter the form it takes. We will not be including Dementors in this stage.");
-		String patronus = scan.nextLine();
-		System.out.println("Does the wizard already have a vault? A simple YES or NO will suffice.");
-		Vault v = null;
-		if(scan.nextLine().toLowerCase().equals("yes")) {		//this is a very useful template.
-			v = findVault();
-		}
-		Wizards w = new Wizards(firstName, lastName, wandWood, wandCore, patronus, null);
-		
-		if(ws.insertWizard(w)) {
-			System.out.println("The wizard was added to the registry.");
+		Wizards w = new Wizards(firstName, lastName, null);
+		log.info("Adding Wizard " + w);
+
+		// checking if you're eligible to build the vault yourself or if you must have an employee do it for you.
+		System.out.println("Are you a Gringotts Employee or Head Goblin? A simple [YES] or [NO] will suffice.");
+		if(scan.nextLine().toLowerCase().equals("yes")) {
+			Vault v = buildVault();
+			log.info("Opening Vault " + v);
+			beginApp();
+			
+		}else if(scan.nextLine().toLowerCase().equals("no")) {
+			System.out.println("The Gringotts Goblins will sort out your vault. Look for our owl within the fortnight.");
+			beginApp();
+		} else if(ws.insertWizard(null)) {
+			log.info("Returning ws.insertWizard result: " + ws.insertWizard(w)); //logging weird/null inputs.
 			beginApp();
 		} else {
 			System.out.println("It appears that your spell has backfired. See to your wounds and start again.");
 			beginApp(); 
-		}
-		
-			
+		}	
 	}
 
 	private Vault findVault() {
 		System.out.println("Does this wizard already have a vault? \n"
 				+ "if so, enter the vault number. \n"
-				+ "if not, enter the number zero (0).");
-		int res = scan.nextInt();	// CHANGE TO A SWITCH STATEMENT. SEE ABOVE.
+				+ "if not, enter the number -1.");
+		int res = scan.nextInt();	// changed to an int that would never be used. Still breakable.
 		Vault v = null;
-		if(res == 0) {
+		if(res == -1) {
 			v = buildVault();
 		} else {
 			v = vd.findByNumber(res);
@@ -107,21 +127,15 @@ public class GringottsConsole {
 	}
 
 	private Vault buildVault() {
-		System.out.println("Let us begin claiming your vault."); // CHANGE TO YES OR NO. Does the wizard already have an active account? 
-		String acctActive = scan.nextLine();
-		System.out.println("Enter your desired vault number.");
-		int vaultNumber = scan.nextInt();
-		// list of vault numbers that are already taken - if statement could work here.
-		// System.out.println("That vault has already been claimed. Find another.");
-		System.out.println("Is the prospective vault-holder a Gringotts employee?");
-		boolean isEmployee = scan.nextBoolean();
-		System.out.println("Is the prospective vault-holder a Gringotts administrator?");
-		boolean isAdmin = scan.nextBoolean();
+		// we already know that only eligible wizards can get this far. Just build the vault.				
+		boolean acctActive = true;
 		Vault v = new Vault();
+		log.info("New ACTIVE Vault " + v);	// logging successful buildVault();
 		return v;
 	}
 
 	private void getOneWizard() {
+		// I'll just let anyone do this for now. It's not a secure bank in this iteration.
 		System.out.println("We assign IDs to each of our vault-holders. Please enter yours.");
 		int i = scan.nextInt();
 		scan.nextLine();
@@ -132,8 +146,8 @@ public class GringottsConsole {
 	
 	private void getAllWizards() {
 		List<Wizards> list = ws.findAll();
-		
-		System.out.println("These are all the wizards in the registry: ");
+		//only Employees and Admins/Head Goblin go beyond this point.
+		System.out.println("These are all of the wizards who have chosen Gringotts: ");
 		for(Wizards w:list) {
 			System.out.println(w);
 		}

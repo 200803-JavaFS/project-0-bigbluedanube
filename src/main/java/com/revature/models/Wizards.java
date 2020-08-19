@@ -9,35 +9,24 @@ public class Wizards implements Serializable{
 	private int wizardId;
 	private String firstName;
 	private String lastName;
-	private String wandWood;
-	private String wandCore;
-	private String patronus;
 	private Vault vault;
 	
 	public Wizards() {
 		super();
 	}
 	
-	public Wizards(int wizardId, String firstName, String lastName, String wandWood, String wandCore,
-		String patronus, Vault vault) {
+	public Wizards(int wizardId, String firstName, String lastName, Vault vault) {
 		super();
 		this.wizardId = wizardId;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.wandWood = wandWood;
-		this.wandCore = wandCore;
-		this.patronus = patronus;
 		this.vault = vault;
 	}
 	
-	public Wizards(String firstName, String lastName, String wandWood, String wandCore,
-			String patronus, Vault vault) {
+	public Wizards(String firstName, String lastName, Vault vault) {
 			super();
 			this.firstName = firstName;
 			this.lastName = lastName;
-			this.wandWood = wandWood;
-			this.wandCore = wandCore;
-			this.patronus = patronus;
 			this.vault = vault;
 		}
 
@@ -66,30 +55,6 @@ public class Wizards implements Serializable{
 		this.lastName = lastName;
 	}
 
-	public String getwandWood() {
-		return wandWood;
-	}
-
-	public void setwandWood(String wandWood) {
-		this.wandWood = wandWood;
-	}
-	
-	public String getwandCore() {
-		return wandCore;
-	}
-
-	public void setwandCore(String wandCore) {
-		this.wandCore = wandCore;
-	}
-	
-	public String getpatronus() {
-		return patronus;
-	}
-
-	public void setpatronus(String patronus) {
-		this.patronus = patronus;
-	}
-
 	public Vault getVault() {
 		return vault;
 	}
@@ -105,9 +70,6 @@ public class Wizards implements Serializable{
 		result = (int) (prime * result + wizardId);
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((wandWood == null) ? 0 : wandWood.hashCode());
-		result = prime * result + ((wandCore == null) ? 0 : wandCore.hashCode());
-		result = prime * result + ((patronus == null) ? 0 : patronus.hashCode());
 		result = prime * result + ((vault == null) ? 0 : vault.hashCode());
 		return result;
 	}
@@ -131,23 +93,6 @@ public class Wizards implements Serializable{
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (wandWood == null) {
-			if (other.wandWood != null)
-				return false;
-		} else if (!wandWood.equals(other.wandWood))
-			return false;
-		if (wandCore == null) {
-			if (other.wandCore != null)
-				return false;
-		} else if (!wandCore.equals(other.wandCore))
-			return false;
-		if (wizardId != other.wizardId)
-			return false;
-		if (patronus == null) {
-			if (other.patronus != null)
-				return false;
-		} else if (!patronus.equals(other.patronus))
-			return false;
 		if (vault == null) {
 			if (other.vault != null)
 				return false;
@@ -158,10 +103,7 @@ public class Wizards implements Serializable{
 
 //	@Override
 	public String toString() {
-		return "Wizards [wizardId=" + wizardId + ", firstName=" + firstName + ", lastName=" + lastName + ", wandWood="
-				+ wandWood + ", wandCore=" + wandCore + ", patronus=" + patronus + ", Vault=" + vault + "]";
+		return "Wizards [wizardId=" + wizardId + ", firstName=" + firstName + ", lastName=" + lastName + ", Vault=" + vault + "]";
 	}
 	
-	
-
 }
