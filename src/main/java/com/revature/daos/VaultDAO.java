@@ -36,6 +36,7 @@ public class VaultDAO implements IVaultDAO {
 //				v.setBalance(result).getDouble("balance");			// this was missing, now it's an error.
 				v.setIsEmployee(result.getBoolean("is_employee"));
 				v.setIsAdmin(result.getBoolean("is_admin"));
+				v.setOwnerFk(result.getInt("owner_fk"));
 				list.add(v); 
 			}
 			
@@ -67,6 +68,7 @@ public class VaultDAO implements IVaultDAO {
 //				v.setBalance(result).getDouble("balance");			// this was missing, now it's an error.
 				v.setIsEmployee(result.getBoolean("is_employee"));
 				v.setIsAdmin(result.getBoolean("is_admin"));
+				v.setOwnerFk(result.getInt("owner_fk"));
 				return v;
 			} else {
 				log.info("Failed Query: Vault not found.");			// had to import the logger to make this work.
@@ -84,8 +86,8 @@ public class VaultDAO implements IVaultDAO {
 		
 		try(Connection conn = ConnectionUtility.getConnection()){
 			
-			String sql = "INSERT INTO vaults (acct_active, balance, is_employee, is_admin)"
-					+ "VALUES (?, ?, ?, ?);";
+			String sql = "INSERT INTO vaults (acct_active, balance, is_employee, is_admin, owner_fk)"
+					+ "VALUES (?, ?, ?, ?, ?);";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			
@@ -94,7 +96,8 @@ public class VaultDAO implements IVaultDAO {
 			statement.setInt(++index, v.getVaultNumber());
 			statement.setDouble(++index, v.getBalance());
 			statement.setBoolean(++index, v.getIsEmployee());
-			statement.setBoolean(++index, v.getIsAdmin());	
+			statement.setBoolean(++index, v.getIsAdmin());
+			statement.setInt(++index, v.getOwnerFk());
 			statement.execute();
 			return true; 
 			

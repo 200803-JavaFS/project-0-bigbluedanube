@@ -12,18 +12,20 @@ public class Vault implements Serializable {
 	private double balance;
 	private boolean isEmployee;
 	private boolean isAdmin;
+	private int ownerFk;
 	
 	public Vault() {
 		super();
 	}
 
-	public Vault(int vaultNumber, boolean acctActive, double balance, boolean isEmployee, boolean isAdmin) {
+	public Vault(int vaultNumber, boolean acctActive, double balance, boolean isEmployee, boolean isAdmin, int ownerFk) {
 		super();
 		this.vaultNumber = vaultNumber;
 		this.acctActive = acctActive;
 		this.balance = balance;
 		this.isEmployee = isEmployee;
 		this.isAdmin = isAdmin;
+		this.ownerFk = ownerFk;
 	}
 
 	public int getVaultNumber() {
@@ -65,8 +67,16 @@ public class Vault implements Serializable {
 	public void setIsAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
+	
+	public int getOwnerFk() {
+		return ownerFk;
+	}
 
+	public void setOwnerFk(int ownerFk) {
+		this.ownerFk = ownerFk;
+	}
 
+	
 //	@Override
 //	public int hashCode() {		// I'm fairly sure these are String methods, so they do not apply here.
 //		final int prime = 31;	// but I will keep them just in case.

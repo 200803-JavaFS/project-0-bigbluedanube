@@ -37,7 +37,8 @@ public class GringottsConsole {
 				System.out.println("Are you a Gringotts Employee or Head Goblin? "
 						+ "A simple [YES] or [NO] will suffice.");	//Goblins are rude. Deal with it.
 				if(scan.nextLine().toLowerCase().equals("yes")) {
-					getAllWizards();					
+					getAllWizards();
+					beginApp();
 				} else if(scan.nextLine().toLowerCase().equals("no")) {
 					System.out.println("We have cast a rather powerful Fidelius Charms over our customer lists "
 							+ "so you cannot see them. Start again.");
@@ -57,16 +58,17 @@ public class GringottsConsole {
 			case "update":
 				System.out.println("Are you Head Goblin? "
 						+ "Please provide the Head Goblin's Master Key.");
-				if(scan.nextLine().toLowerCase().equals("Griphook")) {
+				scan.nextLine();
+				if (scan.nextLine().equals("Griphook")){
 					ws.updateWizard(null);
 				}
-				log.info("Wizard Updated: " + ws.updateWizard(null));	// logging whatever that puts out.
+				beginApp();
+				break;
 			case "delete":
 				System.out.println("Are you Head Goblin? "
 						+ "Please provide the Head Goblin's Master Key.");
-				if(scan.nextLine().toLowerCase().equals("Griphook")) {	// The Master Key is "Griphook", btw.
+				if(scan.nextLine().equals("Griphook")) {	// The Master Key is "Griphook", btw.
 					ws.removeWizard(0);
-					log.info("Wizard Deleted: " + ws.removeWizard(0));
 				} else {
 					System.out.println("It appears your spell has backfired. "
 							+ "See to your wounds and try again.");
@@ -112,6 +114,8 @@ public class GringottsConsole {
 		}	
 	}
 
+	
+	
 	private Vault findVault() {
 		System.out.println("Does this wizard already have a vault? \n"
 				+ "if so, enter the vault number. \n"
@@ -128,9 +132,7 @@ public class GringottsConsole {
 
 	private Vault buildVault() {
 		// we already know that only eligible wizards can get this far. Just build the vault.				
-		boolean acctActive = true;
 		Vault v = new Vault();
-		log.info("New ACTIVE Vault " + v);	// logging successful buildVault();
 		return v;
 	}
 
@@ -147,11 +149,9 @@ public class GringottsConsole {
 	private void getAllWizards() {
 		List<Wizards> list = ws.findAll();
 		//only Employees and Admins/Head Goblin go beyond this point.
-		System.out.println("These are all of the wizards who have chosen Gringotts: ");
 		for(Wizards w:list) {
 			System.out.println(w);
 		}
-		beginApp();
 	}
 	
 	

@@ -46,7 +46,7 @@ public class WizardsDAO implements IWizardsDAO {
 	@Override
 	public Wizards findById(int id) {
 		try (Connection conn = ConnectionUtility.getConnection()) {
-			String sql = "SELECT * FROM wizards WHERE wizard_id =" + id + ";";
+			String sql = "SELECT first_name, last_name FROM wizards WHERE wizard_id =" + id + ";";
 
 			Statement statement = conn.createStatement();
 
@@ -55,8 +55,8 @@ public class WizardsDAO implements IWizardsDAO {
 			if (result.next()) {
 				Wizards w = new Wizards(result.getInt("wizard_id"), result.getString("first_name"),
 						result.getString("last_name"), null);
-				if (result.getString("first_name") != null) {
-					w.setVault(vDao.findByNumber(result.getInt("owner_fk")));	// change this.
+				if (result.getString("wizard_id") != null) {
+					w.setVault(vDao.findByNumber(result.getInt("owner_fk")));	// THIS IS THE PROBLEM AREA.
 				}
 				return w;
 			}
